@@ -1,19 +1,21 @@
-import { useEffect, useState } from 'react'
+export const MIN_PLAYERS = 4
+export const MAX_PLAYERS = 10
 
 export default function EntriesPanel({ names, onChange }) {
-  const [text, setText] = useState(names.join('\n'))
+  const updateName = (i, value) => {
+    const arr = [...names]
+    arr[i] = value
+    onChange(arr)
+  }
 
-  // Keep textarea in sync when names change from outside (shuffle, sort, remove winner)
-  useEffect(() => {
-    setText((prev) => {
-      const parsed = prev.split('\n').map((s) => s.trim()).filter(Boolean)
-      return JSON.stringify(parsed) === JSON.stringify(names) ? prev : names.join('\n')
-    })
-  }, [names])
+  const addPlayer = () => {
+    if (names.length >= MAX_PLAYERS) return
+    onChange([...names, `Player ${names.length + 1}`])
+  }
 
-  const handleInput = (e) => {
-    setText(e.target.value)
-    onChange(e.target.value.split('\n').map((s) => s.trim()).filter(Boolean))
+  const removePlayer = (i) => {
+    if (names.length <= MIN_PLAYERS) return
+    onChange(names.filter((_, j) => j !== i))
   }
 
   const shuffle = () => {
@@ -29,22 +31,55 @@ export default function EntriesPanel({ names, onChange }) {
     onChange([...names].sort((a, b) => a.localeCompare(b)))
   }
 
-  const clear = () => {
-    if (!names.length || window.confirm('Clear all entries?')) onChange([])
+  const reset = () => {
+    if (window.confirm('Reset players to defaults?')) {
+      onChange(Array.from({ length: MIN_PLAYERS }, (_, i) => `Player ${i + 1}`))
+    }
   }
 
   return (
     <div className="panel">
-      <h2>Entries</h2>
-      <p className="hint">One name per line. The wheel updates as you type.</p>
-      <textarea value={text} onChange={handleInput} spellCheck={false} />
+      <h2>Players</h2>
+      <p className="hint">
+        {MIN_PLAYERS} to {MAX_PLAYERS} players. The wheel updates as you type.
+      </p>
+      <div className="player-list">
+        {names.map((name, i) => (
+          <div className="player-row" key={i}>
+            <span className="player-num">{i + 1}</span>
+            <input
+              type="text"
+              value={name}
+              maxLength={24}
+              onChange={(e) => updateName(i, e.target.value)}
+              placeholder={`Player ${i + 1}`}
+              spellCheck={false}
+            />
+            <button
+              className="btn remove"
+              onClick={() => removePlayer(i)}
+              disabled={names.length <= MIN_PLAYERS}
+              title={names.length <= MIN_PLAYERS ? `Minimum ${MIN_PLAYERS} players` : 'Remove player'}
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+      <button
+        className="btn add-player"
+        onClick={addPlayer}
+        disabled={names.length >= MAX_PLAYERS}
+      >
+        {names.length >= MAX_PLAYERS ? `Maximum ${MAX_PLAYERS} players` : '➕ Add player'}
+      </button>
       <div className="count">
-        {names.length} {names.length === 1 ? 'entry' : 'entries'}
+        {names.length} / {MAX_PLAYERS} players
       </div>
       <div className="panel-row">
         <button className="btn" onClick={shuffle}>🔀 Shuffle</button>
         <button className="btn" onClick={sort}>↕ Sort</button>
-        <button className="btn" onClick={clear}>🗑 Clear</button>
+        <button className="btn" onClick={reset}>↺ Reset</button>
       </div>
     </div>
   )

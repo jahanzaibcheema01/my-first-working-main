@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import { playTick } from '../utils/audio.js'
 
-export const COLORS = ['#3369e8', '#d50f25', '#eeb211', '#009925'] // wheelofnames-style palette
+export const COLORS = ['#8b5cf6', '#ec4899', '#f97316', '#14b8a6', '#3b82f6'] // vibrant violet/pink/orange/teal/blue
 
 const SIZE = 1000 // internal canvas resolution
 
@@ -31,9 +31,9 @@ const Wheel = forwardRef(function Wheel({ names, soundOn, spinning, onSpinStart,
     if (!names.length) {
       ctx.beginPath()
       ctx.arc(cx, cy, radius, 0, Math.PI * 2)
-      ctx.fillStyle = '#e6e9f2'
+      ctx.fillStyle = '#2a2347'
       ctx.fill()
-      ctx.fillStyle = '#8a93a6'
+      ctx.fillStyle = '#a59cc7'
       ctx.font = '500 44px "Segoe UI", sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'

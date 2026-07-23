@@ -1,20 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Wheel from './components/Wheel.jsx'
-import EntriesPanel from './components/EntriesPanel.jsx'
+import EntriesPanel, { MIN_PLAYERS, MAX_PLAYERS } from './components/EntriesPanel.jsx'
 import ResultsPanel from './components/ResultsPanel.jsx'
 import WinnerModal from './components/WinnerModal.jsx'
 import Confetti from './components/Confetti.jsx'
+import Logo from './components/Logo.jsx'
 import { playFanfare } from './utils/audio.js'
 
 const DEFAULT_NAMES = ['Ali', 'Beatriz', 'Charles', 'Diya', 'Eric', 'Fatima', 'Gabriel', 'Hanna']
 const STORAGE_KEY = 'spin-the-wheel-names'
+
+function clampPlayers(arr) {
+  const clamped = arr.slice(0, MAX_PLAYERS)
+  while (clamped.length < MIN_PLAYERS) clamped.push(`Player ${clamped.length + 1}`)
+  return clamped
+}
 
 function loadNames() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
       const arr = JSON.parse(saved)
-      if (Array.isArray(arr) && arr.length) return arr
+      if (Array.isArray(arr) && arr.length) return clampPlayers(arr)
     }
   } catch { /* ignore */ }
   return DEFAULT_NAMES
@@ -44,6 +51,7 @@ export default function App() {
 
   const removeWinner = useCallback(() => {
     setNames((prev) => {
+      if (prev.length <= MIN_PLAYERS) return prev
       const idx = prev.indexOf(winner)
       if (idx === -1) return prev
       return [...prev.slice(0, idx), ...prev.slice(idx + 1)]
@@ -78,7 +86,7 @@ export default function App() {
   return (
     <>
       <header>
-        <span className="logo">🎡</span>
+        <span className="logo"><Logo size={38} /></span>
         <h1>Spin the Wheel</h1>
         <span className="tagline">Enter names, spin, and pick a random winner</span>
       </header>
@@ -116,6 +124,7 @@ export default function App() {
             winner={winner}
             onClose={() => setWinner(null)}
             onRemove={removeWinner}
+            canRemove={names.length > MIN_PLAYERS}
           />
           <Confetti />
         </>

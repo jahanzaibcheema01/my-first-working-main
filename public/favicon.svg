@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset=".5" stop-color="#94a3b8"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <radialGradient id="hub" cx=".35" cy=".35" r=".9">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".6" stop-color="#e2e8f0"/>
+      <stop offset="1" stop-color="#94a3b8"/>
+    </radialGradient>
+    <linearGradient id="ptr" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fde047"/>
+      <stop offset="1" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <path d="M50,54 L88,54 A38,38 0 0 1 76.87,80.87 Z" fill="#8b5cf6"/>
+  <path d="M50,54 L76.87,80.87 A38,38 0 0 1 50,92 Z" fill="#ec4899"/>
+  <path d="M50,54 L50,92 A38,38 0 0 1 23.13,80.87 Z" fill="#f97316"/>
+  <path d="M50,54 L23.13,80.87 A38,38 0 0 1 12,54 Z" fill="#14b8a6"/>
+  <path d="M50,54 L12,54 A38,38 0 0 1 23.13,27.13 Z" fill="#3b82f6"/>
+  <path d="M50,54 L23.13,27.13 A38,38 0 0 1 50,16 Z" fill="#8b5cf6"/>
+  <path d="M50,54 L50,16 A38,38 0 0 1 76.87,27.13 Z" fill="#ec4899"/>
+  <path d="M50,54 L76.87,27.13 A38,38 0 0 1 88,54 Z" fill="#f97316"/>
+  <circle cx="50" cy="54" r="38" fill="none" stroke="url(#rim)" stroke-width="5"/>
+  <circle cx="50" cy="54" r="10" fill="url(#hub)" stroke="#64748b" stroke-width="1.5"/>
+  <path d="M50,4 L57,17 L50,14 L43,17 Z" fill="url(#ptr)" stroke="#92400e" stroke-width="1"/>
+</svg>
